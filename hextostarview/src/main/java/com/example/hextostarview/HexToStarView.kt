@@ -18,7 +18,7 @@ val colors : Array<Int> = arrayOf(
     Color.parseColor(it)
 }.toTypedArray()
 val lines : Int = 6
-val parts : Int = 2 *  lines
+val parts : Int = 2 *  lines + 1
 val scGap : Float = 0.02f / parts
 val strokeFactor : Float = 90f
 val sizeFactor : Float = 3.2f
@@ -34,8 +34,8 @@ fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
 fun Canvas.drawHexToStar(scale : Float, w : Float, h : Float, paint : Paint) {
     val size : Float = Math.min(w, h) / sizeFactor
     val sf : Float = scale.sinify()
-    val sf1 : Float = sf.divideScale(0, parts)
-    val sf2 : Float = sf.divideScale(1, parts)
+    val sf1 : Float = sf.divideScale(0, 2)
+    val sf2 : Float = sf.divideScale(1, 2)
     save()
     translate(w / 2, h / 2)
     for (j in 0..(lines - 1)) {
@@ -43,11 +43,16 @@ fun Canvas.drawHexToStar(scale : Float, w : Float, h : Float, paint : Paint) {
         val sf2j : Float = sf2.divideScale(j, lines)
         val sf11 : Float = sf1j.divideScale(0, 2)
         val sf12 : Float = sf1j.divideScale(1, 2)
-        val y : Float = size - size * 0.5f * sf2j
+        val ySize : Float = size * Math.sin(deg * Math.PI / 180).toFloat()
+        val y : Float = ySize - ySize * 0.5f * sf2j
         save()
         rotate(deg * j)
-        drawLine(size / 2, size, size * 0.5f * (1 - sf11), y, paint)
-        drawLine(0f, y, -size * 0.5f * sf12, size, paint)
+        if (sf11 > 0f) {
+            drawLine(size / 2, ySize, size * 0.5f * (1 - sf11), y, paint)
+        }
+        if (sf12 > 0f) {
+            drawLine(0f, y, -size * 0.5f * sf12, ySize, paint)
+        }
         restore()
     }
     restore()
