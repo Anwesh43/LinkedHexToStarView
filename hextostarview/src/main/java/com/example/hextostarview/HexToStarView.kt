@@ -213,4 +213,13 @@ class HexToStarView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : HexToStarView {
+            val view : HexToStarView = HexToStarView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
