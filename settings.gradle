@@ -1,0 +1,3 @@
+include ':hextostarview'
+include ':app'
+rootProject.name = "LinkedHexToStarView"
